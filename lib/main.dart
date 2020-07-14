@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() => runApp(MyApp());
 
@@ -24,7 +25,7 @@ class MyHomePage extends StatefulWidget {
     this.todoList,
   }) : super(key: key);
   final String title;
-  final List<Map<String, dynamic>> todoList;
+  final List<Map> todoList;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -32,24 +33,26 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  List<Map<String, dynamic>> _todoList = [
-    {
-      'title': 'ドキュメントをまとめる',
-      'done': false,
-    },
-    {
-      'title': '要件定義をする',
-      'done': false,
-    },
-    {
-      'title': 'コーディングする',
-      'done': false,
-    }
-  ];
+  List<dynamic> _todoList = [];
 
-  void _countDoneTask(List<Map<String, dynamic>> todoList) {
+  void initializeState() async {
+    final QuerySnapshot result =
+        await Firestore.instance.collection('todos').getDocuments();
+    final List<DocumentSnapshot> documents = result.documents;
+    documents.forEach((document) {
+      setState(() {
+        _todoList.add({
+          'title': document.data['title'] as String,
+          'done': document.data['done'] as bool,
+        });
+      });
+    });
+  }
+
+  void _countDoneTask() {
+    if (_todoList == null) return;
     int _numOfDone = 0;
-    todoList.forEach((Map<String, dynamic> item) {
+    _todoList.forEach((item) {
       if (item['done']) {
         _numOfDone++;
       }
@@ -57,6 +60,12 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _counter = _numOfDone;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initializeState();
   }
 
   @override
@@ -76,9 +85,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             controlAffinity: ListTileControlAffinity.leading,
             onChanged: (bool val) {
+              print(_todoList);
               setState(() {
                 _todoList[i]['done'] = val;
-                _countDoneTask(_todoList);
+                _countDoneTask();
               });
             },
             value: done,
@@ -120,7 +130,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _countDoneTask(widget.todoList),
+        onPressed: () => {
+          _countDoneTask(),
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1011586385718",
+    "firebase_url": "https://dev-takahashi-25080.firebaseio.com",
+    "project_id": "dev-takahashi-25080",
+    "storage_bucket": "dev-takahashi-25080.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1011586385718:android:e5998b54a979da522c1597",
+        "android_client_info": {
+          "package_name": "com.takahashi.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1011586385718-il8gh5l6bnih10f368pphi0tkbb76n60.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRHhkazspsBUhGbqI_ZwjRER8jeTPB3OQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1011586385718-il8gh5l6bnih10f368pphi0tkbb76n60.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
