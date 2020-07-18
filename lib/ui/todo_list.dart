@@ -37,15 +37,18 @@ class SceneryList extends StatelessWidget {
     );
   }
 
-  Widget _buildList(AsyncSnapshot<List<dynamic>> snapshot) {
+  Widget _buildList(AsyncSnapshot<List<TodoModel>> snapshot) {
     return ListView.builder(
       itemBuilder: (_, index) {
-        dynamic model = snapshot.data[index];
+        TodoModel model = snapshot.data[index];
+        print('model');
+        print(index);
+        print(model);
         return _toDoItem(
-          model['title'],
-          model['done'],
-          model['id'],
-          model['docId'],
+          model.title,
+          model.done,
+          model.id,
+          model.docId,
         );
       },
       itemCount: snapshot.data.length,
@@ -57,6 +60,8 @@ class SceneryList extends StatelessWidget {
       title: Text(title),
       value: done,
       onChanged: (bool value) {
+        print('docId');
+        print(docId);
         _bloc.toggleDone(docId);
       },
     );
