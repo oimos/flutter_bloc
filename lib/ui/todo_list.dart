@@ -81,7 +81,6 @@ class _TodoListState extends State<TodoList> {
       title: Text(title),
       value: done,
       onChanged: (bool value) {
-        print('docId');
         _bloc.toggleDone(docId);
       },
     );

@@ -3,19 +3,15 @@ import 'package:flutterbloc/models/todo_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TodoProvider {
-  List<TodoModel> _todoList = [];
-
   Future<List<TodoModel>> fetchToDo() async {
     final result = await Firestore.instance.collection('todos').getDocuments();
     final List<DocumentSnapshot> documents = result.documents;
-    _todoList = [];
+    List<TodoModel> _todoList = [];
+
     documents.forEach((document) {
-      _todoList.add(TodoModel(
-        document.data['title'] as String,
-        document.data['done'] as bool,
-        document.data['id'] as int,
-        document.documentID,
-      ));
+      Map firebaseData = document.data;
+      firebaseData['docId'] = document.documentID;
+      _todoList.add(TodoModel.fromMap(firebaseData));
     });
 
     return _todoList;
@@ -27,6 +23,7 @@ class TodoProvider {
       return doc.data['done'];
     });
     await document.updateData({'done': !currentDone});
-    return fetchToDo();
+    List<TodoModel> todoData = await fetchToDo();
+    return todoData;
   }
 }
