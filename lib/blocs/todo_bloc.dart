@@ -1,25 +1,26 @@
-import 'package:flutter/foundation.dart';
-import 'package:rxdart/rxdart.dart';
-import '../models/todo_model.dart';
-import '../resources/repository.dart';
+import 'dart:async';
+import 'package:flutterbloc/models/todo_model.dart';
+import 'package:flutterbloc/resources/repository.dart';
 
 class TodoBloc {
   final _repository = Repository();
-  final _allTodoFetcher = PublishSubject<List<TodoModel>>();
 
-  Stream<List<TodoModel>> get allTodo => _allTodoFetcher.stream;
+  // ignore: close_sinks
+  final StreamController<List<TodoModel>> _streamController =
+      StreamController<List<TodoModel>>();
+  Stream<List<TodoModel>> get stream => _streamController.stream;
 
   fetchAllTodos() async {
     List<TodoModel> toDoModelList = await _repository.fetchAllProvider();
-    _allTodoFetcher.sink.add(toDoModelList);
+    _streamController.sink.add(toDoModelList);
   }
 
   toggleDone(String docId) async {
     List<TodoModel> toDoModelList = await _repository.toggleDone(docId);
-    _allTodoFetcher.sink.add(toDoModelList);
+    _streamController.sink.add(toDoModelList);
   }
 
   dispose() {
-    _allTodoFetcher.close();
+    _streamController.close();
   }
 }

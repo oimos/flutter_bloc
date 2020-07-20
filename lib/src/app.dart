@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../ui/todo_list.dart';
+import 'package:flutterbloc/ui/todo_list.dart';
 
 class App extends StatelessWidget {
   @override
@@ -7,7 +7,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData.dark(),
       home: Scaffold(
-        body: SceneryList(),
+        body: TodoList(),
       ),
     );
   }

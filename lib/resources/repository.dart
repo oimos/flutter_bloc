@@ -1,6 +1,5 @@
-import '../models/todo_model.dart';
-
-import 'todo_provider.dart';
+import 'package:flutterbloc/models/todo_model.dart';
+import 'package:flutterbloc/resources/todo_provider.dart';
 
 class Repository {
   final provider = new TodoProvider();
